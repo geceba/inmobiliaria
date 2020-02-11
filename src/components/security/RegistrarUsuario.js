@@ -16,14 +16,35 @@ const style = {
 	form: {
 		width: '100%',
 		marginTop: 10
-    },
-    submit: {
-        marginTop: 15,
-        marginBottom: 20
-    }
+	},
+	submit: {
+		marginTop: 15,
+		marginBottom: 20
+	}
 };
 
 class RegistrarUsuario extends Component {
+	state = {
+		usuario: {
+			nombre: '',
+			apellido: '',
+			email: '',
+			password: ''
+		}
+	};
+
+	onChange = () => {
+		let usuario = Object.assign({}, this.state.usuario);
+		usuario[e.target.name] = e.target.value;
+		this.setState({
+			usuario: usuario
+		});
+	};
+
+	registrarUsuario = (e) => {
+		e.preventDefault();
+	};
+
 	render() {
 		return (
 			<Container maxWidth="md">
@@ -38,16 +59,41 @@ class RegistrarUsuario extends Component {
 					<form style={style.form}>
 						<Grid container spacing={2}>
 							<Grid item md={6} xs={12}>
-								<TextField name="nombre" fullWidth label="Ingrese su nombre" />
+								<TextField
+									name="nombre"
+									onChange={this.onChange}
+									value={this.state.usuario.nombre}
+									fullWidth
+									label="Ingrese su nombre"
+								/>
 							</Grid>
 							<Grid item md={6} xs={12}>
-								<TextField name="apellido" fullWidth label="Ingrese sus apellidos" />
+								<TextField
+									name="apellido"
+									onChange={this.onChange}
+									value={this.state.usuario.apellido}
+									fullWidth
+									label="Ingrese sus apellidos"
+								/>
 							</Grid>
 							<Grid item md={6} xs={12}>
-								<TextField name="email" fullWidth label="Ingrese su email" />
+								<TextField
+									name="email"
+									onChange={this.onChange}
+									value={this.state.usuario.email}
+									fullWidth
+									label="Ingrese su email"
+								/>
 							</Grid>
 							<Grid item md={6} xs={12}>
-								<TextField type="password" name="password" fullWidth label="Ingrese su password" />
+								<TextField
+									type="password"
+									onChange={this.onChange}
+									value={this.state.usuario.password}
+									name="password"
+									fullWidth
+									label="Ingrese su password"
+								/>
 							</Grid>
 						</Grid>
 
@@ -55,6 +101,7 @@ class RegistrarUsuario extends Component {
 							<Grid item xs={12} md={6}>
 								<Button
 									type="submit"
+									onClick={this.registrarUsuario}
 									variant="contained"
 									fullWidth
 									size="large"
