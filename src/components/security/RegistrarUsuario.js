@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Avatar, Typography, Grid, TextField, Button } from '@material-ui/core';
 import LockOutlineIcon from '@material-ui/icons/LockOutlined';
+import { compose } from 'recompose';
+import { consumerFirebase } from '../../server';
 
 const style = {
 	paper: {
@@ -23,8 +25,16 @@ const style = {
 	}
 };
 
+const usuarioInicial = {
+	nombre: '',
+	apellido: '',
+	email: '',
+	password: ''
+};
+
 class RegistrarUsuario extends Component {
 	state = {
+		firebase: null,
 		usuario: {
 			nombre: '',
 			apellido: '',
@@ -33,7 +43,17 @@ class RegistrarUsuario extends Component {
 		}
 	};
 
-	onChange = () => {
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.firebase === prevState.firebase) {
+			return null;
+		}
+
+		return {
+			firebase: nextProps.firebase
+		};
+	}
+
+	onChange = (e) => {
 		let usuario = Object.assign({}, this.state.usuario);
 		usuario[e.target.name] = e.target.value;
 		this.setState({
@@ -43,12 +63,26 @@ class RegistrarUsuario extends Component {
 
 	registrarUsuario = (e) => {
 		e.preventDefault();
+		console.log('Imprimir objeto usuario del state: ', this.state.usuario);
+		const { usuario, firebase } = this.state;
+		firebase.db
+			.collection('Users')
+			.add(usuario)
+			.then((usuarioAfter) => {
+				console.log('Esta insercion fue un exito: ', usuarioAfter);
+				this.setState({
+					usuario: usuarioInicial
+				});
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	render() {
 		return (
 			<Container maxWidth="md">
-				<div style={style.papaer}>
+				<div style={style.paper}>
 					<Avatar style={style.avatar}>
 						<LockOutlineIcon />
 					</Avatar>
@@ -119,4 +153,4 @@ class RegistrarUsuario extends Component {
 	}
 }
 
-export default RegistrarUsuario;
+export default compose(consumerFirebase)(RegistrarUsuario);
