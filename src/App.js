@@ -7,24 +7,24 @@ import AppNavBar from './components/layout/AppNavbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import theme from './theme/theme';
 
-import RegistrarUsuario from "./components/security/RegistrarUsuario";
+import RegistrarUsuario from './components/security/RegistrarUsuario';
+import Login from './components/security/Login';
 
-class App extends Component {
-	render() {
-		return (
-			<Router>
-				<MuiThemeProvider theme={theme}>
-          <AppNavBar />
-					<Grid container>
-            <Switch>
-              <Route path="/" exact component={ListaInmuebles}></Route>
-              <Route path="/auth/registrarUsuario" exact component={RegistrarUsuario}></Route>
-            </Switch>
-          </Grid>
-				</MuiThemeProvider>
-			</Router>
-		);
-	}
+function App(props) {
+	return (
+		<Router>
+			<MuiThemeProvider theme={theme}>
+				<AppNavBar />
+				<Grid container>
+					<Switch>
+						<Route path="/" exact component={ListaInmuebles} />
+						<Route path="/auth/registrarUsuario" exact component={RegistrarUsuario} />
+						<Route path="/auth/login" exact component={Login} />
+					</Switch>
+				</Grid>
+			</MuiThemeProvider>
+		</Router>
+	);
 }
 
 export default App;
